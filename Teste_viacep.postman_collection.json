@@ -1,0 +1,2518 @@
+{
+	"info": {
+		"_postman_id": "32ee63a5-930a-4b78-a618-3a0eb96ef5af",
+		"name": "Teste_viacep",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19859312"
+	},
+	"item": [
+		{
+			"name": "Happy Path Folder",
+			"item": [
+				{
+					"name": "viacep_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var n_cep = jsonData.cep\r",
+									"var _cep = n_cep.match(/\\d+/g).join(\"\")\r",
+									"console.log(_cep)\r",
+									"pm.test(\"O Status code é 200 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Validando cep\", function () {\r",
+									"    pm.expect(_cep).to.eql(pm.collectionVariables.get(\"cep\"));\r",
+									"});\r",
+									"pm.test(\"Qual Unidade Unidade Federativa\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"SP\");\r",
+									"});\r",
+									"pm.test(\"Validando dados do body\", function () {\r",
+									"    pm.expect(jsonData.uf).to.eql(\"SP\");\r",
+									"    pm.expect(jsonData.localidade).to.eql(\"São Paulo\");\r",
+									"    pm.expect(jsonData.logradouro).to.eql(\"Praça da Sé\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body contem as propriedades esperadas\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"cep\");\r",
+									"    pm.expect(jsonData).to.have.property(\"logradouro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"complemento\");\r",
+									"    pm.expect(jsonData).to.have.property(\"unidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"bairro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"localidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"uf\");\r",
+									"    pm.expect(jsonData).to.have.property(\"estado\");\r",
+									"    pm.expect(jsonData).to.have.property(\"regiao\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ibge\");\r",
+									"    pm.expect(jsonData).to.have.property(\"gia\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ddd\");\r",
+									"    pm.expect(jsonData).to.have.property(\"siafi\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{cep}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{cep}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_callback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseText = pm.response.text();\r",
+									"const callback = pm.collectionVariables.get(\"callback\");\r",
+									"const jsonString = responseText.replace(new RegExp(`^${callback}`), '').replace('(', '').replace(')', '').replace(';', '');\r",
+									"\r",
+									"const jsonData = JSON.parse(jsonString);\r",
+									"\r",
+									"var n_cep = jsonData.cep\r",
+									"var _cep = n_cep.match(/\\d+/g).join(\"\")\r",
+									"\r",
+									"pm.test(\"O Status code é 200 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Validando cep\", function () {\r",
+									"    pm.expect(_cep).to.eql(pm.collectionVariables.get(\"cep\"));\r",
+									"});\r",
+									"pm.test(\"Qual Unidade Unidade Federativa\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"SP\");\r",
+									"});\r",
+									"pm.test(\"Validando dados do body\", function () {\r",
+									"    pm.expect(jsonData.uf).to.eql(\"SP\");\r",
+									"    pm.expect(jsonData.localidade).to.eql(\"São Paulo\");\r",
+									"    pm.expect(jsonData.logradouro).to.eql(\"Praça da Sé\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body contem as propriedades esperadas\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"cep\");\r",
+									"    pm.expect(jsonData).to.have.property(\"logradouro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"complemento\");\r",
+									"    pm.expect(jsonData).to.have.property(\"unidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"bairro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"localidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"uf\");\r",
+									"    pm.expect(jsonData).to.have.property(\"estado\");\r",
+									"    pm.expect(jsonData).to.have.property(\"regiao\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ibge\");\r",
+									"    pm.expect(jsonData).to.have.property(\"gia\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ddd\");\r",
+									"    pm.expect(jsonData).to.have.property(\"siafi\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{cep}}/json/?callback={{callback}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{cep}}",
+								"json",
+								""
+							],
+							"query": [
+								{
+									"key": "callback",
+									"value": "{{callback}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_xml",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = xml2Json(responseBody).xmlcep;\r",
+									"\r",
+									"var n_cep = jsonData.cep\r",
+									"var _cep = n_cep.match(/\\d+/g).join(\"\")\r",
+									"console.log(_cep)\r",
+									"pm.test(\"O Status code é 200 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Validando cep\", function () {\r",
+									"    pm.expect(_cep).to.eql(pm.collectionVariables.get(\"cep\"));\r",
+									"});\r",
+									"pm.test(\"Qual Unidade Unidade Federativa\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"SP\");\r",
+									"});\r",
+									"pm.test(\"Validando dados do body\", function () {\r",
+									"    pm.expect(jsonData.uf).to.eql(\"SP\");\r",
+									"    pm.expect(jsonData.localidade).to.eql(\"São Paulo\");\r",
+									"    pm.expect(jsonData.logradouro).to.eql(\"Praça da Sé\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body contem as propriedades esperadas\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"cep\");\r",
+									"    pm.expect(jsonData).to.have.property(\"logradouro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"complemento\");\r",
+									"    pm.expect(jsonData).to.have.property(\"unidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"bairro\");\r",
+									"    pm.expect(jsonData).to.have.property(\"localidade\");\r",
+									"    pm.expect(jsonData).to.have.property(\"uf\");\r",
+									"    pm.expect(jsonData).to.have.property(\"estado\");\r",
+									"    pm.expect(jsonData).to.have.property(\"regiao\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ibge\");\r",
+									"    pm.expect(jsonData).to.have.property(\"gia\");\r",
+									"    pm.expect(jsonData).to.have.property(\"ddd\");\r",
+									"    pm.expect(jsonData).to.have.property(\"siafi\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{cep}}/xml/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{cep}}",
+								"xml",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_callback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseText = pm.response.text();\r",
+									"const callback = pm.collectionVariables.get(\"callback\");\r",
+									"const jsonString = responseText.replace(new RegExp(`^${callback}`), '').replace('(', '').replace(')', '').replace(';', '');\r",
+									"const jsonData = JSON.parse(jsonString);\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro}}/json/?callback={{callback}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro}}",
+								"json",
+								""
+							],
+							"query": [
+								{
+									"key": "callback",
+									"value": "{{callback}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_xml",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = xml2Json(responseBody).xmlcep.enderecos.endereco;\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro}}/xml/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro}}",
+								"xml",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_space_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de um item\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_espaco}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_space_callback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseText = pm.response.text();\r",
+									"const callback = pm.collectionVariables.get(\"callback\");\r",
+									"const jsonString = responseText.replace(new RegExp(`^${callback}`), '').replace('(', '').replace(')', '').replace(';', '');\r",
+									"const jsonData = JSON.parse(jsonString);\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/?callback={{callback}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_espaco}}",
+								"json",
+								""
+							],
+							"query": [
+								{
+									"key": "callback",
+									"value": "{{callback}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_space_xml",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = xml2Json(responseBody).xmlcep.enderecos.endereco;\r",
+									"\r",
+									"console.log(jsonData)\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/xml/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_espaco}}",
+								"xml",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_plus_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_mais}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_mais}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_plus_callback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseText = pm.response.text();\r",
+									"const callback = pm.collectionVariables.get(\"callback\");\r",
+									"const jsonString = responseText.replace(new RegExp(`^${callback}`), '').replace('(', '').replace(')', '').replace(';', '');\r",
+									"const jsonData = JSON.parse(jsonString);\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_mais}}/json/?callback={{callback}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_mais}}",
+								"json",
+								""
+							],
+							"query": [
+								{
+									"key": "callback",
+									"value": "{{callback}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_partial_name_with_plus_xml",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = xml2Json(responseBody).xmlcep.enderecos.endereco;\r",
+									"\r",
+									"console.log(jsonData)\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.greaterThan(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_mais}}/xml/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"{{logradouro_com_mais}}",
+								"xml",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_3 char_50_hits_json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.eql(50);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/dom/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"dom",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_3 char_50_hits_callback",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseText = pm.response.text();\r",
+									"const callback = pm.collectionVariables.get(\"callback\");\r",
+									"const jsonString = responseText.replace(new RegExp(`^${callback}`), '').replace('(', '').replace(')', '').replace(';', '');\r",
+									"const jsonData = JSON.parse(jsonString);\r",
+									"\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.eql(50);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/dom/json/?callback={{callback}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"dom",
+								"json",
+								""
+							],
+							"query": [
+								{
+									"key": "callback",
+									"value": "{{callback}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_3 char_50_hits_xml",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = xml2Json(responseBody).xmlcep.enderecos.endereco;\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validando dados do body para o estado \"+ pm.collectionVariables.get(\"UF\") + \" na cidade de \" + pm.collectionVariables.get(\"cidade\") + \" no logradouro \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"UF\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"cidade\"));\r",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array possui mais de dois itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.eql(50);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/dom/xml/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"dom",
+								"xml",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Alternative Path Folder",
+			"item": [
+				{
+					"name": "Not Allowed",
+					"item": [
+						{
+							"name": "viacep_json_post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_post_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_post_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/xml/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"xml",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{cep}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{cep}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_post_without_cep",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path_without_cep",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put_without_cep",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete_without_cep",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_post_without_cep_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path_without_cep_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put_without_cep_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete_without_cep_callback",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/json/?callback={{callback}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"json",
+										""
+									],
+									"query": [
+										{
+											"key": "callback",
+											"value": "{{callback}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_post_without_cep_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/xml/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"xml",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_path_without_cep_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/xml/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"xml",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_put_without_cep_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/xml/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"xml",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "viacep_json_delete_without_cep_xml",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"O Status code é 405 para o CEP \"+ pm.collectionVariables.get(\"cep\"), function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/ws/{{UF}}/{{cidade}}/{{logradouro_com_espaco}}/xml/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"ws",
+										"{{UF}}",
+										"{{cidade}}",
+										"{{logradouro_com_espaco}}",
+										"xml",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "viacep_json_9_digitos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"O Status code é 400 para o CEP com 9 digitos\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{cep}}0/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{cep}}0",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_json_alphanumeric",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"O Status code é 400 para o CEP com 9 digitos\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/010a1000/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"010a1000",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_json_with_space",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"O Status code é 400 para o CEP com 9 digitos\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/010 1000/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"010 1000",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_wrong_uf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array não possui itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/SP/{{cidade}}/{{logradouro}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"SP",
+								"{{cidade}}",
+								"{{logradouro}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_wrong_city",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array não possui itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/São Paulo/{{logradouro}}/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"São Paulo",
+								"{{logradouro}}",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viacep_wrong_street",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"O Status code é 200\" , function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os objetos contem as propriedades esperadas\", function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item).to.have.property(\"cep\");\r",
+									"        pm.expect(item).to.have.property(\"logradouro\");\r",
+									"        pm.expect(item).to.have.property(\"complemento\");\r",
+									"        pm.expect(item).to.have.property(\"unidade\");\r",
+									"        pm.expect(item).to.have.property(\"bairro\");\r",
+									"        pm.expect(item).to.have.property(\"localidade\");\r",
+									"        pm.expect(item).to.have.property(\"uf\");\r",
+									"        pm.expect(item).to.have.property(\"estado\");\r",
+									"        pm.expect(item).to.have.property(\"regiao\");\r",
+									"        pm.expect(item).to.have.property(\"ibge\");\r",
+									"        pm.expect(item).to.have.property(\"gia\");\r",
+									"        pm.expect(item).to.have.property(\"ddd\");\r",
+									"        pm.expect(item).to.have.property(\"siafi\");\r",
+									"    })\r",
+									" \r",
+									"});\r",
+									"\r",
+									"pm.test(\"O response é um array\", function () {\r",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O array não possui itens\", function () {\r",
+									"    pm.expect(jsonData.length).to.be.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os dados encontrados possuem o estado \"+ pm.collectionVariables.get(\"UF\") + \" com a cidade \" + pm.collectionVariables.get(\"cidade\") + \" e o logradouro contendo \" + pm.collectionVariables.get(\"logradouro\"), function () {\r",
+									"    jsonData.forEach(item=>{\r",
+									"        pm.expect(item.uf).to.eql(pm.collectionVariables.get(\"UF\"));\r",
+									"        pm.expect(item.localidade).to.eql(pm.collectionVariables.get(\"cidade\"));\r",
+									"        pm.expect(item.logradouro).to.include(pm.collectionVariables.get(\"logradouro\"));\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ws/{{UF}}/{{cidade}}/Humberto Borella/json/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ws",
+								"{{UF}}",
+								"{{cidade}}",
+								"Humberto Borella",
+								"json",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://viacep.com.br",
+			"type": "string"
+		},
+		{
+			"key": "callback",
+			"value": "TesteAgi",
+			"type": "string"
+		},
+		{
+			"key": "cep",
+			"value": "01001000",
+			"type": "string"
+		},
+		{
+			"key": "logradouro",
+			"value": "Domingos",
+			"type": "string"
+		},
+		{
+			"key": "logradouro_com_espaco",
+			"value": "Domingos Jose",
+			"type": "string"
+		},
+		{
+			"key": "logradouro_com_mais",
+			"value": "Domingos+Jose",
+			"type": "string"
+		},
+		{
+			"key": "UF",
+			"value": "RS",
+			"type": "string"
+		},
+		{
+			"key": "cidade",
+			"value": "Porto Alegre",
+			"type": "string"
+		}
+	]
+}
